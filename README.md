@@ -1,4 +1,3 @@
-# SQL-Joins-Employee-Database
 # SQL Joins – Employee Database
 
 ## 📌 Project Overview
