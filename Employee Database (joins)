@@ -1,0 +1,77 @@
+/*Display the department ID, name and ID and the name of its manager.*/
+select Dname,Dnum,MGRSSN,Mangername from Departments
+Alter table Departments
+add departmentID INT
+Alter table Departments
+add name varchar(50)
+Alter table Departments
+add Mangername varchar(50)
+Alter table Departments
+add MangerID INT
+/*Display the name of the departments and the name of the projects under its control.*/
+select d.Dname,p.Pname
+from Departments as d join Project as p
+on d.Dnum=p.Dnum
+/*Display the full data about all the dependents associated with the name of the employee they depend on.*/
+Select D.ESSN,D.Dependent_name,D.Sex,D.Bdate,E.SSN 
+from Dependent As D Inner join Employee AS E
+ON D.ESSN=E.SSN
+/*Retrieve the names of all employees in department 10 who work more than or equal to 10 hours per week on 
+the "AL Rabwah" project.*/
+Select E.Fname,E.Lname
+from Employee AS E INNER JOIN Departments as D
+ON E.Dno=D.Dnum
+inner join Project as P 
+ON p.Dnum=D.Dnum
+inner join Works_for as w
+on w.Pno=p.Pnumber
+where D.Dnum=10 and P.Pname='AL Rabwah' and w.Hours>=10
+/*Find the names of the employees who directly supervised Kamel Mohamed (Hint: �use self join).*/
+select E.Fname,E.Lname
+FROM Employee as E  join Employee as r
+ON E.Superssn=r.SSN
+Where r.Fname='Kamel' and r.Lname='Mohamed'
+/*Display all employees' data and the data of their dependents, even if they have no dependents*/
+Select *
+from Employee AS E left join Dependent AS D 
+ON E.SSN=D.ESSN
+/*For each department, retrieve the department name and the maximum, minimum and average salary of its employees*/
+select D.Dname,MAX(E.Salary) AS Max_Salary,MIN(E.Salary) AS MIN_Salary,AVG(E.Salary) AS Avg_Salary
+from Employee AS E join Departments AS D
+ON D.Dnum=E.Dno
+Group by D.Dname
+/*For each department, 
+retrieve the department name and the maximum salary of its employees. (Hint: use a subquery.)*/
+Select d.Dname,
+(
+Select MAX(E.Salary)
+From Employee as  E
+Where d.Dnum = E.Dno
+)
+as max_salary
+from departments d;
+/*display the full name and salary of the employee who earns the highest salary (Hint : use a subquery).*/
+Select Fname,lname,Salary
+from Employee
+Where Salary=(
+Select MAX(Salary)
+from Employee)
+/*Employees with NO Dependents*/
+Select *,d.ESSN
+from Employee as e left join Dependent as d 
+ON e.SSN=d.ESSN
+where d.ESSN is null
+/*Departments with NO Projects*/
+Select *,P.Pnumber
+from Departments as d left join Project as P
+ON d.Dnum=P.Dnum
+where P.Dnum is null
+
+
+
+
+
+
+
+
+
